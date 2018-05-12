@@ -1,0 +1,46 @@
+practice TestDrivenDevelopment:
+  with objective "..."
+  owns {
+    alpha TestableSystemFeature:
+      with states {
+        state Planned {"..."}
+        state TestImplemented {"..."}
+        state SolutionImplemented {"..."}
+        state Tested {"..."}
+      }
+
+    workProduct DeveloperTest:
+      with levels {
+        level Sketched {"..."}
+        sufficient level Implemented {"..."}
+      }
+
+    workProduct TestLog:
+      with levels {
+        level Raw {"..."}
+        level Analyzed {"..."}
+      }
+
+    activity ImplementDeveloperTests:
+      targets
+      	DeveloperTest.Implemented
+        TestableSystemFeature.TestImplemented
+      with actions 
+      	"read" on Requirements
+
+    activity RunDeveloperTests:
+      targets
+      	TestableSystemFeature.Tested
+      with actions 
+      	"read" on DeveloperTest, SoftwareSystem
+        "create" on TestLog
+
+    activity ImplementSolution:
+      targets
+      	ImplementationWork.Implementation.Partial
+      	TestableSystemFeature.Tested
+      with actions
+        "read" on DeveloperTest, Requirements
+        "modify" on SoftwareSystem, ImplementationWork.Implementation
+    ...
+  }

@@ -7,11 +7,23 @@ signature TEST = sig
 end
 
 structure AutoTest : TEST = struct
-type sketched = { sketched_at : string }
+type sketched = { sketchedAt : string }
 type implemented = {}
 type 'level test = 'level
-fun sketch () = { sketched_at = "now" }
+fun sketch () = { sketchedAt = "now" }
 fun implement x = {}
+end
+
+signature SOLUTION = sig
+  type implemented
+  type 'state solution
+  val implement : unit -> implemented solution
+end
+
+structure Solution : SOLUTION = struct
+type implemented = {}
+type 'level solution = 'level
+fun implement () = {}
 end
 
 signature FEATURE = sig
@@ -27,18 +39,20 @@ signature FEATURE = sig
 end
 
 structure Feature : FEATURE = struct
+structure T = AutoTest
+structure S = Solution
 type planned = {}
-type test_implemented = AutoTest.implemented AutoTest.test
-type solution_implemented = {}
+type test_implemented = { test : T.implemented T.test }
+type solution_implemented = { solution : S.implemented S.solution }
 type tested = {}
 type 'level feature = 'level
 fun plan () = {}
-fun implementTest x = AutoTest.implement (AutoTest.sketch ())
-fun implementSolution x = {}
+fun implementTest x = { test = T.implement (T.sketch ()) }
+fun implementSolution x = { solution = S.implement () }
 fun test x = {}
 end
 
 val planned = Feature.plan ()
-val testImplemented = Feature.implementTest (planned)
-val solutionImplemented = Feature.implementSolution (testImplemented)
-val tested = Feature.test (solutionImplemented)
+val implementedTest = Feature.implementTest (planned)
+val implementedSolution = Feature.implementSolution (implementedTest)
+val tested = Feature.test (implementedSolution)

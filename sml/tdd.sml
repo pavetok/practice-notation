@@ -40,6 +40,7 @@ signature FEATURE = sig
   type tested
   type deployed
   type in_use
+  type deprecated
   type retired
   val plan : unit -> planned feature
   val implement : planned feature -> implemented feature
@@ -56,6 +57,7 @@ type implemented = {}
 type tested = {}
 type deployed = {}
 type in_use = {}
+type deprecated = {}
 type retired = {}
 fun plan () = {}
 fun implement x = {}

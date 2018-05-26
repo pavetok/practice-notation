@@ -32,38 +32,87 @@ type implemented = {}
 fun implement () = {}
 end
 
-signature FEATURE = sig
+signature FEATURE_ALPHA = sig
   type 'state feature
+  val new : 'state -> 'state feature
+end
+
+structure Feature : FEATURE_ALPHA = struct
+type 'level feature = 'level
+fun new level = level
+end
+
+signature MANAGER_VIEW = sig
+  structure F : FEATURE_ALPHA
   type planned
+  val plan : unit -> planned F.feature
+end
+
+structure ManagerFeature : MANAGER_VIEW = struct
+structure F = Feature
+type planned =
+     { at : string }
+fun plan () =
+    F.new { at = "now" }
+end
+
+signature DEVELOPER_VIEW = sig
+  structure F : FEATURE_ALPHA
   type designed
   type implemented
   type tested
-  type deployed
-  type in_use
-  type deprecated
-  type retired
-  val plan : unit -> planned feature
-  val implement : planned feature -> implemented feature
-  val test : implemented feature -> tested feature
+  val design : unit -> designed F.feature
+  val implement : designed F.feature -> implemented F.feature
+  val test : implemented F.feature -> tested F.feature
 end
 
-structure Feature : FEATURE = struct
-structure T = AutoTest
-structure S = Solution
-type 'level feature = 'level
-type planned = {}
+structure DeveloperFeature : DEVELOPER_VIEW = struct
+structure F = Feature
 type designed = {}
 type implemented = {}
 type tested = {}
-type deployed = {}
-type in_use = {}
-type deprecated = {}
-type retired = {}
-fun plan () = {}
-fun implement x = {}
-fun test x = {}
+fun design () = F.new {}
+fun implement x = F.new {}
+fun test x = F.new {}
 end
 
-val planned = Feature.plan ()
-val implemented = Feature.implement (planned)
-val tested = Feature.test (implemented)
+signature IMPLEMENTER_VIEW = sig
+  structure F : FEATURE_ALPHA
+  type planned
+  type deployed
+  type in_use
+  val plan : unit -> planned F.feature
+  val deploy : planned F.feature -> deployed F.feature
+end
+
+structure ImplementerFeature : IMPLEMENTER_VIEW = struct
+structure F = Feature
+type planned =
+     { at : string }
+type deployed =
+     { at : string }
+type in_use = {}
+fun plan () =
+    F.new { at = "now" }
+fun deploy x =
+    F.new { at = "now" }
+end
+
+signature SUPPORTER_VIEW = sig
+  structure F : FEATURE_ALPHA
+  type working_well
+  type broken
+end
+
+signature ENGINEER_VIEW = sig
+  structure DeveloperFeature : DEVELOPER_VIEW
+  structure ImplementerFeature : IMPLEMENTER_VIEW
+end
+
+structure EngineerFeature : ENGINEER_VIEW = struct
+structure DeveloperFeature = DeveloperFeature
+structure ImplementerFeature = ImplementerFeature
+end
+
+val planned = ImplementerFeature.plan ()
+val deployed = ImplementerFeature.deploy planned

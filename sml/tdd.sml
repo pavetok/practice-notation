@@ -1,69 +1,134 @@
 signature TEST = sig
   type 'state test
-  type sketched
-  type implemented
-  val sketch : unit -> sketched test
-  val implement : sketched test -> implemented test
 end
 
-structure AutoTest : TEST = struct
+structure Test : TEST = struct
 type 'level test = 'level
+end
+
+signature DEVELOPER_TEST = sig
+  structure T : TEST
+  type sketched
+  type implemented
+  val sketch : unit -> sketched T.test
+  val implement : sketched T.test -> implemented T.test
+end
+
+structure DeveloperTest : DEVELOPER_TEST = struct
+structure T = Test
 type sketched =
-     { sketchedAt : string }
+     { at : string }
 type implemented =
-     { sketch : sketched test,
-       implementedAt : string }
+     { sketch : sketched T.test,
+       at : string }
 fun sketch () =
-    { sketchedAt = "now" }
+    { at = "now" }
 fun implement sketch =
     { sketch = sketch,
-      implementedAt = "now" }
+      at = "now" }
 end
 
 signature SOLUTION = sig
   type 'state solution
-  type implemented
-  val implement : unit -> implemented solution
 end
 
-structure Solution : SOLUTION = struct
+structure Soluton = struct
 type 'level solution = 'level
-type implemented = {}
-fun implement () = {}
+end
+
+signature DEVELOPER_SOLUTION = sig
+  structure S : SOLUTION
+  type implemented
+  val implement : unit -> implemented S.solution
+end
+
+structure DeveloperSolution : DEVELOPER_SOLUTION = struct
+structure S = Solution
+type implemented =
+     { at : string }
+fun implement () =
+    { at = "now" }
 end
 
 signature FEATURE = sig
   type 'state feature
-  type planned
-  type designed
-  type implemented
-  type tested
-  type deployed
-  type in_use
-  type deprecated
-  type retired
-  val plan : unit -> planned feature
-  val implement : planned feature -> implemented feature
-  val test : implemented feature -> tested feature
 end
 
 structure Feature : FEATURE = struct
-structure T = AutoTest
-structure S = Solution
 type 'level feature = 'level
-type planned = {}
+end
+
+signature MANAGER_FEATURE = sig
+  structure F : FEATURE
+  type planned
+  val plan : unit -> planned F.feature
+end
+
+structure ManagerFeature : MANAGER_FEATURE = struct
+structure F = Feature
+type planned =
+     { at : string }
+fun plan () =
+    { at = "now" }
+end
+
+signature DEVELOPER_FEATURE = sig
+  structure F : FEATURE
+  type designed
+  type implemented
+  type tested
+  val design : unit -> designed F.feature
+  val implement : designed F.feature -> implemented F.feature
+  val test : implemented F.feature -> tested F.feature
+end
+
+structure DeveloperFeature : DEVELOPER_FEATURE = struct
+structure F = Feature
 type designed = {}
 type implemented = {}
 type tested = {}
-type deployed = {}
-type in_use = {}
-type deprecated = {}
-type retired = {}
-fun plan () = {}
+fun design () = {}
 fun implement x = {}
 fun test x = {}
 end
 
-val planned = Feature.plan ()
-val implemented = Feature.implement (planned)
-val tested = Feature.test (implemented)
+signature IMPLEMENTER_FEATURE = sig
+  structure F : FEATURE
+  type planned
+  type deployed
+  type in_use
+  val plan : unit -> planned F.feature
+  val deploy : planned F.feature -> deployed F.feature
+end
+
+structure ImplementerFeature : IMPLEMENTER_FEATURE = struct
+structure F = Feature
+type planned =
+     { at : string }
+type deployed =
+     { at : string }
+type in_use = {}
+fun plan () =
+    { at = "now" }
+fun deploy x =
+    { at = "now" }
+end
+
+signature SUPPORTER_FEATURE = sig
+  structure F : FEATURE
+  type working_well
+  type broken
+end
+
+signature ENGINEER_FEATURE = sig
+  structure DeveloperFeature : DEVELOPER_FEATURE
+  structure ImplementerFeature : IMPLEMENTER_FEATURE
+end
+
+structure EngineerFeature : ENGINEER_FEATURE = struct
+structure DeveloperFeature = DeveloperFeature
+structure ImplementerFeature = ImplementerFeature
+end
+
+val planned = ImplementerFeature.plan ()
+val deployed = ImplementerFeature.deploy planned

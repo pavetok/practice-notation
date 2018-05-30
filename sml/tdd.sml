@@ -2,12 +2,12 @@ signature ALPHA = sig
   type 'a state
 end
 
-signature STAKEHOLDER = sig
-  include ALPHA
+structure DefaultAlpha : ALPHA = struct
+type 'a state = 'a
 end
 
-structure Stakeholder : STAKEHOLDER = struct
-type 'a state = 'a
+signature STAKEHOLDER = sig
+  include ALPHA
 end
 
 signature VIEW = sig
@@ -20,11 +20,11 @@ signature TEST = sig
 end
 
 structure Test : TEST = struct
-type 'a state = 'a
+open DefaultAlpha
 end
 
 structure Developer : STAKEHOLDER = struct
-open Stakeholder
+open DefaultAlpha
 end
 
 signature DEVELOPER_TEST = sig
@@ -58,7 +58,7 @@ signature SOLUTION = sig
 end
 
 structure Solution = struct
-type 'a state = 'a
+open DefaultAlpha
 end
 
 signature DEVELOPER_SOLUTION = sig
@@ -81,11 +81,11 @@ signature FEATURE = sig
 end
 
 structure Feature : FEATURE = struct
-type 'a state = 'a
+open DefaultAlpha
 end
 
 structure Manager : STAKEHOLDER = struct
-open Stakeholder
+open DefaultAlpha
 end
 
 signature MANAGER_FEATURE = sig
@@ -137,7 +137,7 @@ signature TECHNICAL_WRITER_FEATURE = sig
 end
 
 structure Integrator : STAKEHOLDER = struct
-open Stakeholder
+open DefaultAlpha
 end
 
 signature INTEGRATOR_FEATURE = sig
@@ -170,7 +170,7 @@ signature SUPPORTER_FEATURE = sig
 end
 
 structure Engineer : STAKEHOLDER = struct
-open Stakeholder
+open DefaultAlpha
 end
 
 signature ENGINEER_FEATURE = sig

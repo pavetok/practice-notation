@@ -2,10 +2,6 @@ signature ALPHA = sig
   type 'a state
 end
 
-structure DefaultAlpha : ALPHA = struct
-type 'a state = 'a
-end
-
 signature STAKEHOLDER = sig
   include ALPHA
 end
@@ -13,6 +9,10 @@ end
 signature VIEW = sig
   structure Alpha : ALPHA
   structure Stakeholder : STAKEHOLDER
+end
+
+structure DefaultAlpha : ALPHA = struct
+type 'a state = 'a
 end
 
 signature TEST = sig
@@ -23,7 +23,11 @@ structure Test : TEST = struct
 open DefaultAlpha
 end
 
-structure Developer : STAKEHOLDER = struct
+signature DEVELOPER = sig
+  include STAKEHOLDER
+end
+
+structure Developer : DEVELOPER = struct
 open DefaultAlpha
 end
 

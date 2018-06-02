@@ -1,25 +1,34 @@
-module type TEST = sig
-  type 'state test
-  type sketched
-  type implemented
-  type executed
-  val sketch : unit -> sketched test
-  val implement : sketched test -> implemented test
-  val execute : implemented test -> executed test
+#use "alpha.ml"
+#use "developer.ml"
+
+module type TEST_ALPHA = sig
+  include ALPHA
 end
 
-module AutoTest : TEST = struct
-  type 'level test = 'level
-  type sketched =
-    { sketchedAt : string }
-  type implemented =
-    { implementedAt : string }
-  type executed =
-    { executedAt : string }
-  let sketch () =
-    { sketchedAt = "now" }
-  let implement x =
-    { implementedAt = "now" }
-  let execute x =
-    { executedAt = "now" }
+module Test : TEST_ALPHA = struct
+  include DefaultAlpha
 end
+
+module type TEST_VIEW = sig
+  include VIEW with module Alpha = Test
+end
+
+module type DEVELOPER_VIEW = sig
+  include TEST_VIEW with module Stakeholder = Developer
+  type sketched
+  type implemented
+  val sketch : unit -> sketched Alpha.state
+  val implement : sketched Alpha.state -> implemented Alpha.state
+end
+
+module DeveloperView : DEVELOPER_VIEW = struct
+  module Alpha = Test
+  module Stakeholder = Developer
+  type sketched = Sketched
+  type implemented = Implemented
+  let sketch () = Alpha.mk Sketched
+  let implement x = Alpha.mk Implemented
+end
+
+let sketched = DeveloperView.sketch ()
+let implemented = DeveloperView.implement sketched

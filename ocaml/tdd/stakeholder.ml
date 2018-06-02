@@ -1,10 +1,10 @@
-#use "alpha.ml"
+#mod_use "alpha.ml"
 
 module type DEVELOPER = sig
-  include STAKEHOLDER
+  include Alpha.STAKEHOLDER
 end
 
 module Developer : DEVELOPER = struct
-  include DefaultAlpha
+  include Alpha.Alpha
 end
 

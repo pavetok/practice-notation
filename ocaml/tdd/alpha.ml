@@ -3,7 +3,7 @@ module type ALPHA = sig
   val mk : 'a -> 'a state
 end
 
-module DefaultAlpha : ALPHA = struct
+module Alpha : ALPHA = struct
   type 'a state = 'a
   let mk a = a
 end

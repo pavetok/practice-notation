@@ -23,6 +23,10 @@ structure Test : TEST = struct
 open DefaultAlpha
 end
 
+signature TEST_VIEW = sig
+  include VIEW where Alpha = Test
+end
+
 signature DEVELOPER = sig
   include STAKEHOLDER
 end
@@ -32,7 +36,7 @@ open DefaultAlpha
 end
 
 signature DEVELOPER_TEST = sig
-  include VIEW
+  include TEST_VIEW
   type sketched
   type implemented
   val sketch : unit -> sketched Alpha.state

@@ -7,12 +7,3 @@ module Alpha : ALPHA = struct
   type 'a state = 'a
   let mk a = a
 end
-
-module type STAKEHOLDER = sig
-  include ALPHA
-end
-
-module type VIEW = sig
-  module Alpha : ALPHA
-  module Stakeholder : STAKEHOLDER
-end

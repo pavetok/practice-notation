@@ -16,6 +16,8 @@
 
 #mod_use "views_core.ml"
 
+#mod_use "views_tests_core.ml"
+#mod_use "views_tests_developers.ml"
 #mod_use "views_tests.ml"
 
 #mod_use "views_features_core.ml"

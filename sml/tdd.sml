@@ -2,10 +2,6 @@ signature ALPHA = sig
   type 'a state
 end
 
-structure DefaultAlpha : ALPHA = struct
-type 'a state = 'a
-end
-
 signature STAKEHOLDER = sig
   include ALPHA
 end
@@ -13,6 +9,10 @@ end
 signature VIEW = sig
   structure Alpha : ALPHA
   structure Stakeholder : STAKEHOLDER
+end
+
+structure DefaultAlpha : ALPHA = struct
+type 'a state = 'a
 end
 
 signature TEST = sig
@@ -23,12 +23,20 @@ structure Test : TEST = struct
 open DefaultAlpha
 end
 
-structure Developer : STAKEHOLDER = struct
+signature TEST_VIEW = sig
+  include VIEW where Alpha = Test
+end
+
+signature DEVELOPER = sig
+  include STAKEHOLDER
+end
+
+structure Developer : DEVELOPER = struct
 open DefaultAlpha
 end
 
 signature DEVELOPER_TEST = sig
-  include VIEW
+  include TEST_VIEW
   type sketched
   type implemented
   val sketch : unit -> sketched Alpha.state

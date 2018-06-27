@@ -4,3 +4,4 @@ module Alpha = Alphas_core.Alpha
 module Stakeholders = Alphas_stakeholders
 module Tests = Alphas_tests
 module Features = Alphas_features
+module Practices = Alphas_practices

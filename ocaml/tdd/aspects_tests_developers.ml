@@ -2,7 +2,7 @@ module Alpha = Alphas.Tests.Test
 module Stakeholder = Alphas.Stakeholders.Developers.Developer
 
 module type DEVELOPER = sig
-  include Views_tests_core.VIEW with module Stakeholder = Stakeholder
+  include Aspects_tests_core.ASPECT with module Stakeholder = Stakeholder
   type sketched
   type implemented
   val sketch : unit -> sketched Alpha.state

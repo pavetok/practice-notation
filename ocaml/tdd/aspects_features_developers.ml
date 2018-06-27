@@ -2,7 +2,7 @@ module Alpha = Alphas.Features.Feature
 module Stakeholder = Alphas.Stakeholders.Developers.Developer
 
 module type DEVELOPER = sig
-  include Views_features_core.VIEW with module Stakeholder = Stakeholder
+  include Aspects_features_core.ASPECT with module Stakeholder = Stakeholder
   type designed
   type implemented
   val design : unit -> designed Alpha.state

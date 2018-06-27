@@ -14,19 +14,19 @@
 
 #mod_use "alphas.ml"
 
-(* Views *)
+(* Aspects *)
 
-#mod_use "views_core.ml"
+#mod_use "aspects_core.ml"
 
-#mod_use "views_tests_core.ml"
-#mod_use "views_tests_developers.ml"
-#mod_use "views_tests.ml"
+#mod_use "aspects_tests_core.ml"
+#mod_use "aspects_tests_developers.ml"
+#mod_use "aspects_tests.ml"
 
-#mod_use "views_features_core.ml"
-#mod_use "views_features_developers.ml"
-#mod_use "views_features.ml"
+#mod_use "aspects_features_core.ml"
+#mod_use "aspects_features_developers.ml"
+#mod_use "aspects_features.ml"
 
-#mod_use "views.ml"
+#mod_use "aspects.ml"
 
 (* Work Products *)
 
